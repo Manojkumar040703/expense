@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Expense Tracker</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .red { color: red; font-weight: bold; }
+        .menu a { margin-right: 15px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+
+<h1>My Expense Tracker</h1>
+
+<div class="menu">
+    <a href="{% url 'add_expense' %}">Add Expense</a>
+    <a href="{% url 'set_budget' %}">Set Budget</a>
+    <a href="{% url 'budget_report' %}">Budget Report</a>
+    <a href="{% url 'export_excel' %}">Export Excel</a>
+    <a href="{% url 'logout_user' %}">Logout</a>
+</div>
+
+<h3>Total Spent This Month: ₹{{ total }}</h3>
+
+{% if budget %}
+<p>Monthly Budget ({{ budget.month }}/{{ budget.year }}): <b>₹{{ budget.amount }}</b></p>
+{% endif %}
+
+{% if crossed %}
+<p class="red">You have crossed your monthly budget limit!</p>
+{% endif %}
+
+<h2>Expenses</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Payment Mode</th>
+        <th>Merchant</th>
+        <th>Location</th>
+        <th>Notes</th>
+        <th>Created By</th>
+        <th>Actions</th>
+    </tr>
+    {% for exp in expenses %}
+    <tr>
+        <td>{{ exp.id }}</td>
+        <td>{{ exp.date }}</td>
+        <td>{{ exp.category.name }}</td>
+        <td>{{ exp.title }}</td>
+        <td>₹{{ exp.amount }}</td>
+        <td>{{ exp.payment_mode }}</td>
+        <td>{{ exp.merchant_name }}</td>
+        <td>{{ exp.location }}</td>
+        <td>{{ exp.note }}</td>
+        <td>{{ exp.created_by.username }}</td>
+        <td>
+            <a href="{% url 'edit_expense' exp.id %}">Edit</a> |
+            <a href="{% url 'delete_expense' exp.id %}">Delete</a>
+            <a href="{% url 'logout_user' %}">Logout</a>
+
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="11">No expenses yet.</td></tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

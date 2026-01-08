@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+</head>
+<body>
+
+<nav>
+    {% if user.is_authenticated %}
+        <a href="/">Home</a> |
+        <a href="/add/">Add Expense</a> |
+        <a href="/set-budget/">Set Budget</a> |
+        <a href="/logout/">Logout</a>
+    {% else %}
+        <a href="/login/">Login</a> |
+        <a href="/register/">Register</a>
+    {% endif %}
+</nav>
+
+<hr>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
